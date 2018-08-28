@@ -1,5 +1,5 @@
 {
-    "name": "sunixzs/availablespaeimage",
+    "name": "sunixzs/availablespaceimage",
     "description": "Special image generator for Sculpin-based websites and blogs. Provides Twig function available_space_image to generate several sizes for best fit on several devices.",
     "keywords": ["images", "thumbnails", "sculpin", "sculpin-plugin"],
     "license": "MIT",
@@ -11,7 +11,7 @@
         },
         {
             "name": "Marcel Briefs",
-            "email": "sunixzs@gmail.com",
+            "email": "sunixzs@gmail.com"
         }
     ],
     "require": {

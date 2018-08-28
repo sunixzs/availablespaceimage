@@ -1,6 +1,6 @@
 <?php
 
-namespace Beryllium\Icelus\DependencyInjection;
+namespace Sunixzs\Availablespaceimage\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -8,9 +8,9 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
 
 /**
- * Icelus Extension.
+ * Availablespaceimage Extension.
  */
-class IcelusExtension extends Extension
+class AvailablespaceimageExtension extends Extension
 {
     /**
      * {@inheritdoc}
@@ -23,7 +23,7 @@ class IcelusExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
-        $container->setParameter('icelus.config.prefix', $config['prefix']);
-        $container->setParameter('icelus.config.output_dir', $config['output_dir']);
+        $container->setParameter('vailablespaceimage.config.prefix', $config['prefix']);
+        $container->setParameter('vailablespaceimage.config.output_dir', $config['output_dir']);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Beryllium\Icelus;
+namespace Sunixzs\Availablespaceimage;
 
 use Twig_Extension;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Beryllium\Icelus\DependencyInjection;
+namespace Sunixzs\Availablespaceimage\DependencyInjection;
 
-use Beryllium\Icelus\ImageService;
+use Sunixzs\Availablespaceimage\ImageService;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder;
 
-        $rootNode = $treeBuilder->root('icelus');
+        $rootNode = $treeBuilder->root('availablespaceimage');
 
         $rootNode
             ->children()

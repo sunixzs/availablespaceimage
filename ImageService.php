@@ -1,6 +1,6 @@
 <?php
 
-namespace Beryllium\Icelus;
+namespace Sunixzs\Availablespaceimage;
 
 use Imanee\Imanee;
 use Symfony\Component\Filesystem\Filesystem;

@@ -4,25 +4,25 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="icelus.imanee.class">Imanee\Imanee</parameter>
-        <parameter key="icelus.image_service.class">Beryllium\Icelus\ImageService</parameter>
-        <parameter key="icelus.twig_extension.class">Beryllium\Icelus\TwigImageExtension</parameter>
+        <parameter key="availablespaceimage.imanee.class">Imanee\Imanee</parameter>
+        <parameter key="availablespaceimage.image_service.class">Sunixzs\Availablespaceimage\ImageService</parameter>
+        <parameter key="availablespaceimage.twig_extension.class">Sunixzs\Availablespaceimage\TwigImageExtension</parameter>
     </parameters>
 
     <services>
 
-        <service id="icelus.imanee" class="%icelus.imanee.class%" />
+        <service id="availablespaceimage.imanee" class="%icelus.imanee.class%" />
 
-        <service id="icelus.service" class="%icelus.image_service.class%">
-            <argument type="service" id="icelus.imanee" />
+        <service id="availablespaceimage.service" class="%availablespaceimage.image_service.class%">
+            <argument type="service" id="availablespaceimage.imanee" />
             <argument>%sculpin.source_dir%</argument>
             <argument>%sculpin.output_dir%</argument>
             <argument>%icelus.config.prefix%</argument>
             <argument type="service" id="filesystem" />
         </service>
 
-        <service id="icelus.extension.image" class="%icelus.twig_extension.class%">
-            <argument type="service" id="icelus.service" />
+        <service id="availablespaceimage.extension.image" class="%availablespaceimage.twig_extension.class%">
+            <argument type="service" id="availablespaceimage.service" />
             <tag name="twig.extension" />
         </service>
 

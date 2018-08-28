@@ -10,7 +10,7 @@
         stopOnFailure="false"
         syntaxCheck="false">
     <testsuites>
-        <testsuite name="Beryllium/Icelus">
+        <testsuite name="Sunixzs/Availablespaceimage">
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>
