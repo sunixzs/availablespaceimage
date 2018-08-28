@@ -11,13 +11,13 @@
 
     <services>
 
-        <service id="availablespaceimage.imanee" class="%icelus.imanee.class%" />
+        <service id="availablespaceimage.imanee" class="%availablespaceimage.imanee.class%" />
 
         <service id="availablespaceimage.service" class="%availablespaceimage.image_service.class%">
             <argument type="service" id="availablespaceimage.imanee" />
             <argument>%sculpin.source_dir%</argument>
             <argument>%sculpin.output_dir%</argument>
-            <argument>%icelus.config.prefix%</argument>
+            <argument>%availablespaceimage.config.prefix%</argument>
             <argument type="service" id="filesystem" />
         </service>
 

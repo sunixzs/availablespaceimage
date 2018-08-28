@@ -50,41 +50,104 @@ class ImageService
     }
 
     /**
-     * Generate a thumbnail
+     * creates an image block
      *
-     * @param string    $image      Path to image file (relative to source_dir)
-     * @param int       $width      Width, in pixels (default: 150)
-     * @param int       $height     Height, in pixels (default: 150)
-     * @param bool      $crop       When set to true, the thumbnail will be cropped
-     *                              from the center to match the given size
-     *
-     * @return string               Location of the thumbnail, for use in <img> tags
+     * @param string $image
+     * @param string $alt
+     * @param string $title
+     * @param integer $width0
+     * @param integer $width1
+     * @param integer $width2
+     * @param integer $width2
+     * @return string html img tag
      */
-    public function thumbnail($image, $width = 150, $height = 150, $crop = false)
+    public function available_space_image($image, $alt="", $title = "", $width0 = 480, $width1 = 768, $width2 = 1280, $width3 = 1600)
     {
-        // no sense duplicating work - only process image if thumbnail doesn't already exist
-        if (!isset($this->completed[$image][$width][$height][$crop]['filename'])) {
-            $this->prepOutputDir();
-            $this->imanee->load($this->source_dir . '/' . $image)->thumbnail($width, $height, $crop);
-            $thumb_name = vsprintf(
-                '%s-%sx%s%s.%s',
+        $imagesize = getimagesize($this->source_dir . '/' . $image);
+        if (!($imagesize[0] && $imagesize[1])) {
+            return "ERROR: could not get image size for " . $this->source_dir . '/' . $image;
+        }
+
+        $originalWidth = $imagesize[0];
+        $originalHeight = $imagesize[1];
+
+        $this->prepOutputDir();
+
+        $images = [];
+
+        if ($width0) {
+            $images[$width0] = $this->createImage($image, $width0, $originalWidth, $originalHeight);
+        }
+        if ($width1) {
+            $images[$width1] = $this->createImage($image, $width1, $originalWidth, $originalHeight);
+        }
+        if ($width2) {
+            $images[$width2] = $this->createImage($image, $width2, $originalWidth, $originalHeight);
+        }
+        if ($width3) {
+            $images[$width3] = $this->createImage($image, $width3, $originalWidth, $originalHeight);
+        }
+
+        if (count($images) === 0) {
+            return "";
+        }
+
+        $html .= "<img ";
+        if ($title) {
+            $html .= " title=\"" . htmlentities($title) . "\"";
+        }
+        $html .= " alt=\"" . htmlentities($alt) . "\"";
+        $html .= " data-method=\"available-space-image\"";
+        $i = 0;
+        foreach ($images as $width => $source) {
+            if ($i === 0) {
+                $html .= " data-default-width=\"" . $width . "\"";
+                $html .= " src=\"" . $source . "\"";
+            } else {
+                $html .= " data-src-" . $width . "=\"" . $source . "\"";
+            }
+            $i++;
+        }
+
+        $html .= " />";
+        return new \Twig_Markup( $html, 'UTF-8' );
+    }
+
+    /**
+     * Resizes an image
+     *
+     * @param [type] $image
+     * @param [type] $width
+     * @param [type] $defaultWidth
+     * @param [type] $defaultHeight
+     * @return void
+     */
+    protected function createImage($image, $width, $defaultWidth, $defaultHeight) {
+        // no sense duplicating work - only process image if it doesn't already exist
+        if (!isset($this->completed[$image][$width]['filename'])) {
+            $height = (integer) ($defaultWidth / $width * $defaultHeight);
+            $this->imanee->load($this->source_dir . '/' . $image)->resize($width, $height, "transparent");
+            $patinfo = pathinfo($image);
+
+            $image_name = vsprintf(
+                '%s-%s-%sx%s.%s',
                 array(
-                    md5($image),
+                    $patinfo["filename"],
+                    substr(md5($image), 0, 8),
                     $width,
                     $height,
-                    ($crop ? '-cropped' : ''),
                     strtolower($this->imanee->getFormat())
                 )
             );
 
             // write the thumbnail to disk
             file_put_contents(
-                $this->output_dir . $this->prefix . '/' . $thumb_name,
+                $this->output_dir . $this->prefix . '/' . $image_name,
                 $this->imanee->output()
             );
-            $this->completed[$image][$width][$height][$crop]['filename'] = $thumb_name;
+            $this->completed[$image][$width]['filename'] = $image_name;
         }
 
-        return $this->prefix . '/' . $this->completed[$image][$width][$height][$crop]['filename'];
+        return $this->prefix . '/' . $this->completed[$image][$width]['filename'];
     }
 }

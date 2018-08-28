@@ -5,7 +5,7 @@ namespace Sunixzs\Availablespaceimage;
 use Twig_Extension;
 
 /**
- * Exposes a "thumbnail" function to Twig templates
+ * Exposes a "available_space_image" function to Twig templates
  */
 class TwigImageExtension extends Twig_Extension
 {
@@ -24,7 +24,7 @@ class TwigImageExtension extends Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('thumbnail', array($this->service, 'thumbnail'))
+            new \Twig_SimpleFunction('available_space_image', array($this->service, 'available_space_image'))
         );
     }
 }

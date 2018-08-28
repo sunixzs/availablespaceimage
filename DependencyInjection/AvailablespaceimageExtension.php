@@ -23,7 +23,7 @@ class AvailablespaceimageExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
-        $container->setParameter('vailablespaceimage.config.prefix', $config['prefix']);
-        $container->setParameter('vailablespaceimage.config.output_dir', $config['output_dir']);
+        $container->setParameter('availablespaceimage.config.prefix', $config['prefix']);
+        $container->setParameter('availablespaceimage.config.output_dir', $config['output_dir']);
     }
 }
