@@ -125,7 +125,7 @@ class ImageService
     protected function createImage($image, $width, $defaultWidth, $defaultHeight) {
         // no sense duplicating work - only process image if it doesn't already exist
         if (!isset($this->completed[$image][$width]['filename'])) {
-            $height = (integer) ($defaultWidth / $width * $defaultHeight);
+            $height = (integer) ($defaultWidth / $defaultHeight * $width);
             $this->imanee->load($this->source_dir . '/' . $image)->resize($width, $height, "transparent");
             $patinfo = pathinfo($image);
 
