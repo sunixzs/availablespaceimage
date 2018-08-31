@@ -50,6 +50,45 @@ class ImageService
     }
 
     /**
+     * Generate a thumbnail
+     *
+     * @param string    $image      Path to image file (relative to source_dir)
+     * @param int       $width      Width, in pixels (default: 150)
+     * @param int       $height     Height, in pixels (default: 150)
+     * @param bool      $crop       When set to true, the thumbnail will be cropped
+     *                              from the center to match the given size
+     *
+     * @return string               Location of the thumbnail, for use in <img> tags
+     */
+    public function thumbnail($image, $width = 150, $height = 150, $crop = false)
+    {
+        // no sense duplicating work - only process image if thumbnail doesn't already exist
+        if (!isset($this->completed[$image][$width][$height][$crop]['filename'])) {
+            $this->prepOutputDir();
+            $this->imanee->load($this->source_dir . '/' . $image)->thumbnail($width, $height, $crop);
+            $thumb_name = vsprintf(
+                '%s-%sx%s%s.%s',
+                array(
+                    md5($image),
+                    $width,
+                    $height,
+                    ($crop ? '-cropped' : ''),
+                    strtolower($this->imanee->getFormat())
+                )
+            );
+
+            // write the thumbnail to disk
+            file_put_contents(
+                $this->output_dir . $this->prefix . '/' . $thumb_name,
+                $this->imanee->output()
+            );
+            $this->completed[$image][$width][$height][$crop]['filename'] = $thumb_name;
+        }
+
+        return $this->prefix . '/' . $this->completed[$image][$width][$height][$crop]['filename'];
+    }
+
+    /**
      * creates an image block
      *
      * @param string $image
@@ -110,7 +149,7 @@ class ImageService
         }
 
         $html .= " />";
-        return new \Twig_Markup( $html, 'UTF-8' );
+        return new \Twig_Markup($html, 'UTF-8');
     }
 
     /**
@@ -122,7 +161,8 @@ class ImageService
      * @param [type] $defaultHeight
      * @return void
      */
-    protected function createImage($image, $width, $defaultWidth, $defaultHeight) {
+    protected function createImage($image, $width, $defaultWidth, $defaultHeight)
+    {
         // no sense duplicating work - only process image if it doesn't already exist
         if (!isset($this->completed[$image][$width]['filename'])) {
             $height = (integer) ($defaultWidth / $defaultHeight * $width);

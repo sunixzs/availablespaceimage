@@ -24,7 +24,8 @@ class TwigImageExtension extends Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('available_space_image', array($this->service, 'available_space_image'))
+            new \Twig_SimpleFunction('available_space_image', array($this->service, 'available_space_image')),
+            new \Twig_SimpleFunction('thumbnail', array($this->service, 'thumbnail'))
         );
     }
 }
